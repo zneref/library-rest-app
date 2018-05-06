@@ -24,6 +24,8 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -90,5 +92,26 @@ public class UserControllerTestSuite {
                 .andExpect(jsonPath("$.name", is("name")))
                 .andExpect(jsonPath("$.lastName", is("last name")))
                 .andExpect(jsonPath("$.created", is("2017-12-26")));
+    }
+
+    @Test
+    public void shouldCreateUser() throws Exception {
+        //Given
+        User user = new User("name", "last name", Date.valueOf(LocalDate.of(2017, 12, 26)));
+        UserDto userDto = new UserDto(2, "name2", "last name2", Date.valueOf(LocalDate.of(2017, 11, 26)));
+        Gson gson = new Gson();
+        String jsonContent = gson.toJson(user);
+        when(service.addUser(user)).thenReturn(userDto);
+
+        //When, Then
+        verify(service,times(1)).addUser(user);
+        mockMvc.perform(post("/v1/library/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding("UTF-8")
+                .content(jsonContent))
+                .andExpect(jsonPath("$.userId", is(2)))
+                .andExpect(jsonPath("$.name", is("name2")))
+                .andExpect(jsonPath("$.lastName", is("last name2")))
+                .andExpect(jsonPath("$.created", is("2017-11-26")));
     }
 }
