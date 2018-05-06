@@ -91,24 +91,4 @@ public class UserControllerTestSuite {
                 .andExpect(jsonPath("$.lastName", is("last name")))
                 .andExpect(jsonPath("$.created", is("2017-12-26")));
     }
-
-    @Test
-    public void shouldCreateUser() throws Exception {
-        //Given
-        User user = new User("name", "last name", Date.valueOf(LocalDate.of(2017, 12, 26)));
-        UserDto userDto = new UserDto(2, "name2", "last name2", Date.valueOf(LocalDate.of(2017, 11, 26)));
-        Gson gson = new Gson();
-        String jsonContent = gson.toJson(user);
-        when(service.addUser(any(User.class))).thenReturn(userDto);
-
-        //When, Then
-        mockMvc.perform(post("/v1/library/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("UTF-8")
-                .content(jsonContent))
-                .andExpect(jsonPath("$.userId", is(1)))
-                .andExpect(jsonPath("$.name", is("name")))
-                .andExpect(jsonPath("$.lastName", is("last name")))
-                .andExpect(jsonPath("$.created", is("2017-12-26")));
-    }
 }
