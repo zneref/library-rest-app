@@ -10,6 +10,7 @@ import zneref.restapp.mapper.UserMapper;
 import zneref.restapp.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,9 +34,8 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto getUserById(final int userId) throws NotFoundException {
-        User user = userRepository.findByUserId(userId).orElseThrow(NotFoundException::new);
-        return userMapper.mapToUserDto(user);
+    public Optional<User> getUserById(final int userId) {
+        return userRepository.findByUserId(userId);
     }
 
     public UserDto addUser(User user) {

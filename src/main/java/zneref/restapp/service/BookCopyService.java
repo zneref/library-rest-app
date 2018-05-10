@@ -2,13 +2,13 @@ package zneref.restapp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zneref.restapp.controller.NotFoundException;
 import zneref.restapp.domain.BookCopy;
 import zneref.restapp.domain.dto.BookCopyDto;
 import zneref.restapp.mapper.BookCopyMapper;
 import zneref.restapp.repository.BookCopyRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,8 +32,8 @@ public class BookCopyService {
                 .collect(Collectors.toList());
     }
 
-    public BookCopyDto getBookCopyById(int id) throws NotFoundException {
-        return mapper.mapToBookCopyDto(repository.findByBookCopyId(id).orElseThrow(NotFoundException::new));
+    public Optional<BookCopy> getBookCopyById(int id) {
+        return repository.findByBookCopyId(id);
     }
 
     public BookCopyDto addBookCopy(BookCopy copy) {

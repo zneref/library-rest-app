@@ -27,8 +27,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    UserDto getUser(@PathVariable(value = "id") int id) throws NotFoundException {
-        return userService.getUserById(id);
+    User getUser(@PathVariable(value = "id") int id) throws NotFoundException {
+        return userService.getUserById(id).orElseThrow(() -> new NotFoundException("User not found!"));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)

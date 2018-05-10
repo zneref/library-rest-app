@@ -9,6 +9,7 @@ import zneref.restapp.mapper.BookMapper;
 import zneref.restapp.repository.BookRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,8 +40,8 @@ public class BookService {
                 .collect(Collectors.toList());
     }
 
-    public BookDto getBookById(int id) throws NotFoundException {
-        return bookMapper.mapToBookDto(bookRepository.findByBookId(id).orElseThrow(NotFoundException::new));
+    public Optional<Book> getBookById(int id) {
+        return bookRepository.findByBookId(id);
     }
 
     public BookDto addBook(Book book) {

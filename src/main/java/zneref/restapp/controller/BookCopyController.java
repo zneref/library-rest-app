@@ -22,8 +22,8 @@ public class BookCopyController {
     }
 
     @GetMapping("/{id}")
-    BookCopyDto getCopiesByCopyId(@PathVariable(value = "id") int id) throws NotFoundException {
-        return bookCopyService.getBookCopyById(id);
+    BookCopy getCopiesByCopyId(@PathVariable(value = "id") int id) throws NotFoundException {
+        return bookCopyService.getBookCopyById(id).orElseThrow(() -> new NotFoundException("Book copy not found!"));
     }
 
     @GetMapping("/items")

@@ -32,8 +32,8 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    BookDto getBook(@PathVariable(value = "id") int id) throws NotFoundException {
-        return bookService.getBookById(id);
+    Book getBook(@PathVariable(value = "id") int id) throws NotFoundException {
+        return bookService.getBookById(id).orElseThrow(() -> new NotFoundException("User not found!"));
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)

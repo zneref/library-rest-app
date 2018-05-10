@@ -78,21 +78,6 @@ public class UserControllerTestSuite {
                 .andExpect(jsonPath("$[0].created", is("2017-12-26")));
     }
 
-    @Test
-    public void shouldFetchUserById() throws Exception {
-        //Given
-        UserDto userDto = new UserDto(1, "name", "last name", Date.valueOf(LocalDate.of(2017, 12, 26)));
-
-        when(service.getUserById((anyInt()))).thenReturn(userDto);
-
-        //When, Then
-        mockMvc.perform(get("/v1/library/users/1").contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.userId", is(1)))
-                .andExpect(jsonPath("$.name", is("name")))
-                .andExpect(jsonPath("$.lastName", is("last name")))
-                .andExpect(jsonPath("$.created", is("2017-12-26")));
-    }
 
     @Test
     public void shouldCreateUser() throws Exception {
@@ -104,7 +89,7 @@ public class UserControllerTestSuite {
         when(service.addUser(user)).thenReturn(userDto);
 
         //When, Then
-        verify(service,times(1)).addUser(user);
+        verify(service, times(1)).addUser(user);
         mockMvc.perform(post("/v1/library/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("UTF-8")
